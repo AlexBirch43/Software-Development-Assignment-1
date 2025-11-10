@@ -74,7 +74,15 @@ def edit_weapon(name):
     inventory = load_inventory()
     for item in inventory:
         if item['name'].lower() == name.lower():
-            change = int(input("Enter quantity to add or remove (use negative for removal): "))
+            # Fix to address Bug B3- Added a check to only allow numeric digits (positive and negative) to be inputted
+            # and added a text prompt if anything else is tried.
+            while True:
+                change_input = input("Enter quantity to add or remove (use negative for removal): ")
+                try:
+                    change = int(change_input)
+                    break
+                except ValueError:
+                    print("Invalid input. Please use a number")
             current_quantity = int(item['quantity'])
             new_quantity = current_quantity + change
             if new_quantity < 0:
@@ -90,7 +98,18 @@ def edit_weapon(name):
 def add_new_weapon():
     name = input("Enter weapon name: ")
     type_ = input("Enter weapon type: ")
-    quantity = input("Enter quantity: ")
+    # Fix to address Bug B3- Added a check to only allow numeric digits (positive only) to be inputted
+    # and added text prompts if anything else is tried.
+    while True:
+        quantity_input = input("Enter numeric quantity: ")
+        try:
+            quantity = int(quantity_input)
+            if quantity < 0:
+                print("Invalid input. Quantity cannot be negative")
+                continue
+            break
+        except ValueError:
+            print("Invalid input. Quantity must be a number")
     inventory = load_inventory()
     inventory.append({'name': name, 'type': type_, 'quantity': quantity})
     save_inventory(inventory)
@@ -110,7 +129,7 @@ def remove_weapon(name):
 def overall_report():
     inventory = load_inventory()
     if not inventory:
-        print ("Inventory Empty.")   # fix to address Bug B1- Overall Report is blank when a new CSV created.
+        print ("Inventory Empty.")   # Fix to address Bug B1- Overall Report is blank when a new CSV created.
         return
     print("\nInventory Report:")
     for item in inventory:

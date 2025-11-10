@@ -74,10 +74,14 @@ def edit_weapon(name):
     inventory = load_inventory()
     for item in inventory:
         if item['name'].lower() == name.lower():
-            # Fix to address Bug B3- Added a check to only allow numeric digits (positive and negative) to be inputted
+            # Fix to address Bug B3 - Added a check to only allow numeric digits (positive and negative) to be inputted
             # and added a text prompt if anything else is tried.
+            # Fix to address Bug B5 - Added a fix to handle empty input
             while True:
                 change_input = input("Enter quantity to add or remove (use negative for removal): ")
+                if not change_input:
+                    print("No input detected, Please enter a number.")
+                    continue
                 try:
                     change = int(change_input)
                     break
@@ -98,7 +102,7 @@ def edit_weapon(name):
 def add_new_weapon():
     name = input("Enter weapon name: ")
     type_ = input("Enter weapon type: ")
-    # Fix to address Bug B3- Added a check to only allow numeric digits (positive only) to be inputted
+    # Fix to address Bug B3 & B4 - Added a check to only allow numeric digits (positive only) to be inputted
     # and added text prompts if anything else is tried.
     while True:
         quantity_input = input("Enter numeric quantity: ")

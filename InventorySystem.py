@@ -1,10 +1,10 @@
 import csv
 import os
 
-# Hardcoded credentials
+#  Hardcoded credentials
 Users = {
     "PILOT": "FLYBOY",
-    "GROUNDCREW": "BOMBSAWAY"
+    "GROUNDCREW": "WINGIT"
 }
 
 CSV_FILE = 'inventory.csv'
@@ -109,6 +109,9 @@ def remove_weapon(name):
 #  Overall Report (Groundcrew Only)
 def overall_report():
     inventory = load_inventory()
+    if not inventory:
+        print ("Inventory Empty.")   # fix to address Bug B1- Overall Report is blank when a new CSV created.
+        return
     print("\nInventory Report:")
     for item in inventory:
         print(f"{item['name']} ({item['type']}): {item['quantity']} units")

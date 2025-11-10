@@ -48,6 +48,7 @@ def save_inventory(inventory):
 
 #  Search Weapon (Available to both users)
 def search_weapon(name):
+    name = name.strip()  #  Fix to address Bug B6 - code to strip whitespace surrounding input.
     inventory = load_inventory()
     for item in inventory:
         if item['name'].lower() == name.lower():
@@ -57,9 +58,10 @@ def search_weapon(name):
 
 #  Fire! (Pilot Only)
 def fire(name):
+    name = name.strip()
     inventory = load_inventory()
     for item in inventory:
-        if item['name'].lower() == name.lower():
+        if item['name'].strip().lower() == name.lower():
             if int(item['quantity']) > 0:
                 item['quantity'] = str(int(item['quantity']) - 1)
                 save_inventory(inventory)
@@ -71,9 +73,10 @@ def fire(name):
 
 #  Edit Weapon (Groundcrew Only)
 def edit_weapon(name):
+    name = name.strip()   #  Fix to address Bug B6 - code to strip whitespace surrounding input.
     inventory = load_inventory()
     for item in inventory:
-        if item['name'].lower() == name.lower():
+        if item['name'].strip().lower() == name.lower():
             # Fix to address Bug B3 - Added a check to only allow numeric digits (positive and negative) to be inputted
             # and added a text prompt if anything else is tried.
             # Fix to address Bug B5 - Added a fix to handle empty input
@@ -100,12 +103,12 @@ def edit_weapon(name):
 
 #  Add New Weapon (Groundcrew Only)
 def add_new_weapon():
-    name = input("Enter weapon name: ")
-    type_ = input("Enter weapon type: ")
+    name = input("Enter weapon name: ").strip()  #  Fix to address Bug B6 - code to strip whitespace surrounding input.
+    type_ = input("Enter weapon type: ").strip()
     # Fix to address Bug B3 & B4 - Added a check to only allow numeric digits (positive only) to be inputted
     # and added text prompts if anything else is tried.
     while True:
-        quantity_input = input("Enter numeric quantity: ")
+        quantity_input = input("Enter numeric quantity: ").strip()
         try:
             quantity = int(quantity_input)
             if quantity < 0:
@@ -121,8 +124,9 @@ def add_new_weapon():
 
 #  Remove Weapon (Groundcrew Only)
 def remove_weapon(name):
+    name = name.strip()
     inventory = load_inventory()
-    new_inventory = [item for item in inventory if item['name'].lower() != name.lower()]
+    new_inventory = [item for item in inventory if item['name'].strip().lower() != name.lower()]
     if len(new_inventory) == len(inventory):
         print("Weapon not found.")
     else:
@@ -137,7 +141,7 @@ def overall_report():
         return
     print("\nInventory Report:")
     for item in inventory:
-        print(f"{item['name']} ({item['type']}): {item['quantity']} units")
+        print(f"{item['name'].strip()} ({item['type'].strip()}): {item['quantity'].strip()} units") #  Fix to address Bug B6 - code to strip whitespace surrounding input.
 
 #  Pilot Menu
 def pilot_menu():
@@ -146,11 +150,11 @@ def pilot_menu():
         print("1. Search Weapon")
         print("2. Fire Weapon")
         print("3. Logout")
-        choice = input("Choose an option: ")
+        choice = input("Choose an option: ").strip()
         if choice == '1':
-            search_weapon(input("Enter weapon name: "))
+            search_weapon(input("Enter weapon name: ").strip())
         elif choice == '2':
-            fire(input("Enter weapon name: "))
+            fire(input("Enter weapon name: ").strip())
         elif choice == '3':
             break
         else:
@@ -166,15 +170,15 @@ def groundcrew_menu():
         print("4. Remove Weapon")
         print("5. Overall Report")
         print("6. Logout")
-        choice = input("Choose an option: ")
+        choice = input("Choose an option: ").strip() #  Fix to address Bug B6 - code to strip whitespace surrounding input.
         if choice == '1':
-            search_weapon(input("Enter weapon name: "))
+            search_weapon(input("Enter weapon name: ").strip())
         elif choice == '2':
-            edit_weapon(input("Enter weapon name: "))
+            edit_weapon(input("Enter weapon name: ").strip())
         elif choice == '3':
             add_new_weapon()
         elif choice == '4':
-            remove_weapon(input("Enter weapon name: "))
+            remove_weapon(input("Enter weapon name: ").strip())
         elif choice == '5':
             overall_report()
         elif choice == '6':
